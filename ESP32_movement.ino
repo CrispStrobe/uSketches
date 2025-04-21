@@ -1,7 +1,13 @@
 #include <Arduino.h>
+
+// leverages https://github.com/pschatzmann/arduino-audio-tools 
 #include "AudioTools.h"
+
+// leverages https://github.com/pschatzmann/arduino-posix-fs
 #include "FileSystems.h"
-#include "espeak.h"
+
+// leverages the excellent https://github.com/pschatzmann/arduino-espeak-ng
+#include "espeak.h" 
 
 // === Audio via PWM on GPIO18 ===
 PWMAudioOutput pwm;
