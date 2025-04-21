@@ -1,5 +1,15 @@
 
 ### `ESP32_movement.ino`
 
-This sketch runs on an ESP32 and combines a PIR motion sensor and an ultrasonic distance sensor to detect nearby presence. It uses `espeak-ng` (with German voice data) to output speech through a small 8 Ω speaker, connected via a **BC337 NPN transistor** driven by **PWM audio on GPIO18**. The BC337’s **base** is connected through a 1 kΩ resistor to GPIO18, **emitter to GND**, and **collector to the speaker's negative line**; the speaker's positive side connects to 3.3 V. A **100 nF ceramic capacitor** (labeled `104`) is placed between the **base and emitter** to filter PWM noise and stabilize the transistor switching. The **ultrasonic sensor** connects with **TRIG to GPIO16** and **ECHO to GPIO17**, using a **voltage divider** (1 kΩ + 2 kΩ) to reduce the 5 V ECHO signal to ~3.3 V. A **PIR sensor** connects its OUT pin to **GPIO15**. Additionally, a **momentary button** is wired between **GPIO19 and GND** and configured with `INPUT_PULLUP`: when pressed, the system speaks whether movement was recently detected and announces the current distance. The system measures every 200 ms, and announces "Hallo! Herzlich Willkommen!" only when motion or significant distance change (>10%) is detected within a 1-second window.
+This sketch uses an ESP32 with a PIR motion sensor and an ultrasonic distance sensor to detect presence and respond with spoken output via `espeak-ng` (German voice) through PWM audio on GPIO18. The speaker is driven via a BC337 NPN transistor, with a 100 nF capacitor between base and emitter for signal smoothing. The ultrasonic sensor’s ECHO pin (5 V) is stepped down to a safe 3.3 V using a voltage divider (1 kΩ + 2 kΩ) before connecting to GPIO17. A momentary push button on GPIO19 lets you query whether motion was recently detected and what the current distance is. The ESP32 samples every 200 ms and only speaks “Hallo! Herzlich Willkommen!” if motion or a >10% distance change occurred within the last second — limited to once every 15 seconds.
 
+Power is supplied by **4× AA NiMH batteries**, wired in series (~5.2–5.6 V). Both sensors (PIR and ultrasonic) are connected directly to this battery voltage at their **VIN/VCC pins**. The ESP32 is powered via its **VIN** and **GND** pins.
+
+The sketch requires the following libraries by [@pschatzmann](https://github.com/pschatzmann):
+
+- [`arduino-audio-tools`](https://github.com/pschatzmann/arduino-audio-tools)  
+  → for audio streaming and PWM output  
+- [`arduino-posix-fs`](https://github.com/pschatzmann/arduino-posix-fs)  
+  → for in-memory access to `espeak-ng` voice data  
+- [`arduino-espeak-ng`](https://github.com/pschatzmann/arduino-espeak-ng)  
+  → compact, multilingual TTS engine with German support
