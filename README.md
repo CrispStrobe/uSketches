@@ -13,3 +13,7 @@ The sketch requires the following libraries by [@pschatzmann](https://github.com
   → for in-memory access to `espeak-ng` voice data  
 - [`arduino-espeak-ng`](https://github.com/pschatzmann/arduino-espeak-ng)  
   → compact, multilingual TTS engine with German support
+
+### `ev3_alarm_clock.py`
+
+Alarm clock script for LEGO EV3 showing large time display with smaller alarm status below. Set or change alarm using left/right buttons, toggle with center, exit with back. Rings 10 times on alarm. Touch sensor on input 1 lights EV3 LED when pressed. Time shown in Berlin timezone (UTC+2 if `pytz` unavailable). Install font with `sudo apt-get install fonts-dejavu-core`. Enable NTP sync on Wi-Fi by installing `sntp` and adding an executable script `/etc/network/if-up.d/ntp` with `#!/bin/sh\nsntp pool.ntp.org`.
