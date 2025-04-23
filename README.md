@@ -16,4 +16,14 @@ The sketch requires the following libraries by [@pschatzmann](https://github.com
 
 ### `ev3_alarm_clock.py`
 
-Alarm clock script for LEGO EV3 showing large time display with smaller alarm status below. Set or change alarm using left/right buttons, toggle with center, exit with back. Rings 10 times on alarm. Touch sensor on input 1 lights EV3 LED when pressed. Time shown in Berlin timezone (UTC+2 if `pytz` unavailable). Install font with `sudo apt-get install fonts-dejavu-core`. Enable NTP sync on Wi-Fi by installing `sntp` and adding an executable script `/etc/network/if-up.d/ntp` with `#!/bin/sh\nsntp pool.ntp.org`.
+Alarm clock script for LEGO EV3 showing large time display with smaller alarm status below. Set or change alarm using left/right buttons, toggle with center, exit with back. Rings 10 times on alarm. Touch sensor on input 1 lights EV3 LED when pressed. Time shown in Berlin timezone (UTC+2 if `pytz` unavailable). Install font with `sudo apt-get install fonts-dejavu-core`. Consider enabling NTP sync on Wi-Fi by leveraging `sntp`, e.g. adding an executable script `/etc/network/if-up.d/ntp-sync` with 
+```
+#!/bin/sh
+# ntp-sync: called automatically when wlan0 comes online
+
+IFACE="$1"
+
+if [ "$IFACE" = "wlan0" ]; then
+    echo "$(date): wlan0 is up — syncing time" >> /var/log/ntp-sync.log
+    /usr/bin/sntp pool.ntp.org >> /var/log/ntp-sync.log 2>&1
+fi```
